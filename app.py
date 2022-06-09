@@ -25,7 +25,7 @@ Migrate(app, db)
 # 6. ejecutamos el comando en la consola: python app.py o python3 app.py y revisamos nuestro navegador
 @app.route('/')
 def index():
-    return 'Hola Mundo'
+    return 'Hola desde gitpod'
 
 # 7. Ruta para consultar todos los Usuarios
 @app.route('/usuarios', methods=['GET'])
@@ -49,6 +49,33 @@ def addUsuario():
 
     return jsonify(user.serialize()),200
 
+# 13. Creamos metodo para consultar un usuario en especifico
+@app.route('/usuarios/<id>', methods=['GET'])
+def getUsuario(id):
+    user = Usuario.query.get(id)
+    return jsonify(user.serialize()),200
+
+# 14. Borrar usuario
+@app.route('/usuarios/<id>', methods=['DELETE'])
+def deleteUsuario(id):
+    user = Usuario.query.get(id)
+    Usuario.delete(user)
+    return jsonify(user.serialize()),200
+
+# 15. Modificar Usuario
+@app.route('/usuarios/<id>', methods=['PUT'])
+def updateUsuario(id):
+    user = Usuario.query.get(id)
+
+    user.primer_nombre = request.json.get('primer_nombre')
+    user.segundo_nombre = request.json.get('segundo_nombre')
+    user.apellido_paterno = request.json.get('apellido_paterno')
+    user.apellido_materno = request.json.get('apellido_materno')
+    user.direccion = request.json.get('direccion')
+
+    Usuario.save(user)
+
+    return jsonify(user.serialize()),200
 
 
 
